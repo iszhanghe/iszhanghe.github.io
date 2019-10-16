@@ -164,7 +164,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(16)</small></div></li>
+    <li><div class="all active">全部文章<small>(17)</small></div></li>
     
         
             
@@ -192,6 +192,14 @@
     
         
             
+            <li><div data-rel="mysql">mysql<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
             <li><div data-rel="数据库">数据库<small>(3)</small></div>
                 
             </li>
@@ -208,7 +216,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_posts_number" value="17">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -255,6 +263,10 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">书籍</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a href="javascript:" class="color1">maven</a>
     </li>
     
@@ -263,7 +275,7 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a href="javascript:" class="color3">书籍</a>
+        <a href="javascript:" class="color1">mysql</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -320,14 +332,6 @@
             <span class="post-date" title="2019-09-24 18:49:50">2019/09/24</span>
         </a>
         
-        <a  class="java "
-           href="/2019/09/24/centos之yum方式安装mysql/"
-           data-tag="linux"
-           data-author="" >
-            <span class="post-title" title="centos之yum方式安装mysql">centos之yum方式安装mysql</span>
-            <span class="post-date" title="2019-09-24 18:49:50">2019/09/24</span>
-        </a>
-        
         <a  class=""
            href="/2019/09/24/hello-world/"
            data-tag=""
@@ -337,10 +341,10 @@
         </a>
         
         <a  class="java "
-           href="/2019/09/24/maven多环境配置/"
-           data-tag="maven,java"
+           href="/2019/09/24/centos之yum方式安装mysql/"
+           data-tag="linux"
            data-author="" >
-            <span class="post-title" title="maven多配置">maven多配置</span>
+            <span class="post-title" title="centos之yum方式安装mysql">centos之yum方式安装mysql</span>
             <span class="post-date" title="2019-09-24 18:49:50">2019/09/24</span>
         </a>
         
@@ -358,6 +362,22 @@
            data-author="" >
             <span class="post-title" title="谁动了我的奶酪">谁动了我的奶酪</span>
             <span class="post-date" title="2019-09-24 18:49:50">2019/09/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/09/24/maven多环境配置/"
+           data-tag="maven,java"
+           data-author="" >
+            <span class="post-title" title="maven多配置">maven多配置</span>
+            <span class="post-date" title="2019-09-24 18:49:50">2019/09/24</span>
+        </a>
+        
+        <a  class="mysql "
+           href="/2019/10/16/2019-10-16-MySQL的索引/"
+           data-tag="mysql"
+           data-author="" >
+            <span class="post-title" title="mysql索引">mysql索引</span>
+            <span class="post-date" title="2019-10-16 14:05:20">2019/10/16</span>
         </a>
         
         <a  class="数据库 "
@@ -478,7 +498,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-09-24 23:57:59'>2019-09-24 18:49</time>
+        创建时间:<time class="date" title='更新时间: 2019-09-25 11:20:00'>2019-09-24 18:49</time>
         
     </div>
     <div class="article-meta">
@@ -555,7 +575,6 @@
 <h1 id="四-为什么-String-在-Java-中是不可变的？"><a href="#四-为什么-String-在-Java-中是不可变的？" class="headerlink" title="四.为什么 String 在 Java 中是不可变的？"></a>四.为什么 String 在 Java 中是不可变的？</h1><p>我最喜欢的 Java 面试问题，很棘手，但同时也非常有用。一些面试者也常问这个问题，为什么 String 在 Java 中是 final 的。<br>字符串在 Java 中是不可变的，因为 String 对象缓存在 String 池中。由于缓存的字符串在多个客户之间共享，因此始终存在风险，其中一个客户的操作会影响所有其他客户。例如，如果一段代码将 String “Test” 的值更改为 “TEST”，则所有其他客户也将看到该值。由于 String 对象的缓存性能是很重要的一方面，因此通过使 String 类不可变来避免这种风险。<br>同时，String 是 final 的，因此没有人可以通过扩展和覆盖行为来破坏 String 类的不变性、缓存、散列值的计算等。String 类不可变的另一个原因可能是由于 HashMap。<br>由于把字符串作为 HashMap 键很受欢迎。对于键值来说，重要的是它们是不可变的，以便用它们检索存储在 HashMap 中的值对象。由于 HashMap 的工作原理是散列，因此需要具有相同的值才能正常运行。如果在插入后修改了 String 的内容，可变的 String将在插入和检索时生成两个不同的哈希码，可能会丢失 Map 中的值对象。<br>如果你是印度板球迷，你可能能够与我的下一句话联系起来。字符串是Java的 VVS Laxman，即非常特殊的类。我还没有看到一个没有使用 String 编写的 Java 程序。这就是为什么对 String 的充分理解对于 Java 开发人员来说非常重要。<br>String 作为数据类型，传输对象和中间人角色的重要性和流行性也使这个问题在 Java 面试中很常见。<br>为什么 String 在 Java 中是不可变的是 Java 中最常被问到的字符串访问问题之一，它首先讨论了什么是 String，Java 中的 String 如何与 C 和 C++ 中的 String 不同，然后转向在Java中什么是不可变对象，不可变对象有什么好处，为什么要使用它们以及应该使用哪些场景。这个问题有时也会问：“为什么 String 在 Java 中是 final 的”。<br>正如我所说，这个问题可能有很多可能的答案，而 String 类的唯一设计者可以放心地回答它。我在 Joshua Bloch 的 Effective Java 书中期待一些线索，但他也没有提到它。我认为以下几点解释了为什么 String 类在 Java 中是不可变的或 final 的：</p>
 <p>想象字符串池没有使字符串不可变，它根本不可能，因为在字符串池的情况下，一个字符串对象/文字，例如 “Test” 已被许多参考变量引用，因此如果其中任何一个更改了值，其他参数将自动受到影响，即假设<br>String A=”Test”;<br>String B=”Test”;<br>现在字符串 B 调用 “Test”.toUpperCase(), 将同一个对象改为“TEST”，所以 A 也是 “TEST”，这不是期望的结果。<br>下图显示了如何在堆内存和字符串池中创建字符串。</p>
 <p><img src="/images/storage/auto-orient.png" alt="img"></p>
-<p><img src="//yoursite.com/2019/09/24/5个最难回答的java面试题/D:%5Cwork%5Ctypora%5Cimage%5C3DRA9H6EHV8TNBKTIH5QPD4OF4.png" alt></p>
 <ul>
 <li><p>字符串已被广泛用作许多 Java 类的参数，例如，为了打开网络连接，你可以将主机名和端口号作为字符串传递，你可以将数据库 URL 作为字符串传递, 以打开数据库连接，你可以通过将文件名作为参数传递给 File I/O 类来打开 Java 中的任何文件。如果 String 不是不可变的，这将导致严重的安全威胁，我的意思是有人可以访问他有权授权的任何文件，然后可以故意或意外地更改文件名并获得对该文件的访问权限。由于不变性，你无需担心这种威胁。这个原因也说明了，为什么 String 在 Java 中是最终的，通过使 java.lang.String final，Java设计者确保没有人覆盖 String 类的任何行为。</p>
 </li>
@@ -601,7 +620,7 @@
     
     <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="Today">Today</a></p>
     <p><span class="copy-title">发布时间:</span>2019-09-24, 18:49:50</p>
-    <p><span class="copy-title">最后更新:</span>2019-09-24, 23:57:59</p>
+    <p><span class="copy-title">最后更新:</span>2019-09-25, 11:20:00</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/09/24/5个最难回答的java面试题/" title="5个最难回答的Java面试题">http://yoursite.com/2019/09/24/5个最难回答的java面试题/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
@@ -663,7 +682,7 @@
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#Apollo','#配置管理','#linux','#maven','#java','#书籍','#MySQL','#单元测试','#sonarQube','#面试题','#Spring Cloud','#微服务','#多态','#内存','#SeaweedFS','#分布式文件系统',],
+            'data': ['#Apollo','#配置管理','#linux','#书籍','#maven','#java','#mysql','#MySQL','#单元测试','#sonarQube','#面试题','#Spring Cloud','#微服务','#多态','#内存','#SeaweedFS','#分布式文件系统',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');

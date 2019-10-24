@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <title>深入浅析内存 | Today的个人主页</title>
+  <meta name="keywords" content=" java , 内存 ">
+  <meta name="description" content="深入浅析内存 | Today的个人主页">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="阅读是一门艺术，在阅读中发现乐趣，享受乐趣是我们追求的目标，只有这样才能真正把书读透，汲取其中的精髓，从而充实自己。今天，我读完了《谁动了我的奶酪》一书。">
+<meta name="keywords" content="书籍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谁动了我的奶酪">
+<meta property="og:url" content="http://yoursite.com/2019/10/24/谁动了我的奶酪/index.html">
+<meta property="og:site_name" content="Today的个人主页">
+<meta property="og:description" content="阅读是一门艺术，在阅读中发现乐趣，享受乐趣是我们追求的目标，只有这样才能真正把书读透，汲取其中的精髓，从而充实自己。今天，我读完了《谁动了我的奶酪》一书。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-26T00:45:26.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谁动了我的奶酪">
+<meta name="twitter:description" content="阅读是一门艺术，在阅读中发现乐趣，享受乐趣是我们追求的目标，只有这样才能真正把书读透，汲取其中的精髓，从而充实自己。今天，我读完了《谁动了我的奶酪》一书。">
+
+
+<link rel="icon" href="/img/touxiang.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1"></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+<script src="/js/iconfont.js?v=1.0.1"></script>
+
+</head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value>
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/touxiang.jpg" />
+</a>
+<div class="author">
+    <span>Today</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://iszhanghe.github.io/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="weibo" href="https://weibo.com/5407776252/profile?topnav=1&amp;wvr=6" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-weibo"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="zhihu" href="https://www.zhihu.com/people/sea-43-37/activities" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-zhihu"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:iszhwork@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1047633413&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="kugou" href="https://www.kugou.com/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-kugou"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="neteasemusic" href="https://music.163.com/#/user/home?id=122233878" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-neteasemusic"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(18)</small></div></li>
+    
+        
+            
+            <li><div data-rel="mysql">mysql<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="java">java<small>(7)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="工具">工具<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="数据库">数据库<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="书籍">书籍<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="ACM"><i class="fold iconfont icon-right"></i>ACM<small>(0)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Template">Template<small>(0)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="idea">idea<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="18">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://iszhanghe.github.io">TODAY</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">mysql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">面试题</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color2">Apollo</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">配置管理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">SeaweedFS</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">分布式文件系统</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color1">maven</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">Spring Cloud</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color4">微服务</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">单元测试</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">sonarQube</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">多态</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">书籍</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">内存</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color3">IDEA 破解</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a href="javascript:" class="color5">idea</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="mysql "
+           href="/2019/10/24/2019-10-16-MySQL的索引/"
+           data-tag="mysql"
+           data-author="" >
+            <span class="post-title" title="mysql索引">mysql索引</span>
+            <span class="post-date" title="2019-10-24 09:15:59">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/5个最难回答的java面试题/"
+           data-tag="面试题,java"
+           data-author="" >
+            <span class="post-title" title="5个最难回答的Java面试题">5个最难回答的Java面试题</span>
+            <span class="post-date" title="2019-10-24 09:15:59">2019/10/24</span>
+        </a>
+        
+        <a  class="工具 "
+           href="/2019/10/24/Apollo/"
+           data-tag="Apollo,配置管理"
+           data-author="" >
+            <span class="post-title" title="Apollo">Apollo</span>
+            <span class="post-date" title="2019-10-24 09:15:59">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/centos之yum方式安装mysql/"
+           data-tag="linux"
+           data-author="" >
+            <span class="post-title" title="centos之yum方式安装mysql">centos之yum方式安装mysql</span>
+            <span class="post-date" title="2019-10-24 09:15:59">2019/10/24</span>
+        </a>
+        
+        <a  class="工具 "
+           href="/2019/10/24/SeaweedFS/"
+           data-tag="SeaweedFS,分布式文件系统"
+           data-author="" >
+            <span class="post-title" title="SeaweedFS">SeaweedFS</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="数据库 "
+           href="/2019/10/24/MySQL-2/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL-2">MySQL-2</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class=""
+           href="/2019/10/24/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2019-10-24 09:15:59">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/maven多环境配置/"
+           data-tag="java,maven"
+           data-author="" >
+            <span class="post-title" title="maven多配置">maven多配置</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/SpringCloud/"
+           data-tag="java,Spring Cloud,微服务"
+           data-author="" >
+            <span class="post-title" title="Spring Cloud">Spring Cloud</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/powermock/"
+           data-tag="java,单元测试"
+           data-author="" >
+            <span class="post-title" title="Mockito和PowerMock用法">Mockito和PowerMock用法</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="工具 "
+           href="/2019/10/24/sonarqubSonar/"
+           data-tag="sonarQube"
+           data-author="" >
+            <span class="post-title" title="sonarQube">sonarQube</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="数据库 "
+           href="/2019/10/24/mysql/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL">MySQL</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class=""
+           href="/2019/09/24/测试/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="测试">测试</span>
+            <span class="post-date" title="2019-09-24 23:56:38">2019/09/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/多态/"
+           data-tag="java,多态"
+           data-author="" >
+            <span class="post-title" title="多态">多态</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="书籍 "
+           href="/2019/10/24/谁动了我的奶酪/"
+           data-tag="书籍"
+           data-author="" >
+            <span class="post-title" title="谁动了我的奶酪">谁动了我的奶酪</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="java "
+           href="/2019/10/24/深入浅析内存/"
+           data-tag="java,内存"
+           data-author="" >
+            <span class="post-title" title="深入浅析内存">深入浅析内存</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="数据库 "
+           href="/2019/10/24/MySQL-1/"
+           data-tag="MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL-1">MySQL-1</span>
+            <span class="post-date" title="2019-10-24 09:16:00">2019/10/24</span>
+        </a>
+        
+        <a  class="idea "
+           href="/2019/10/24/2019-10-22-IDEA2019.2.3版本破解/"
+           data-tag="idea"
+           data-author="" >
+            <span class="post-title" title="IDEA 破解">IDEA 破解</span>
+            <span class="post-date" title="2019-10-24 09:43:56">2019/10/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-深入浅析内存" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">深入浅析内存</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a href="javascript:" data-rel="java">java</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color5">java</a>
+            
+            <a href="javascript:" class="color3">内存</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-08-26 08:45:21'>2019-10-24 09:16</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#你所不知道的内存知识"><span class="toc-text">你所不知道的内存知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#复杂的CPU与单纯的内存"><span class="toc-text">复杂的CPU与单纯的内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多核CPU与内存共享的问题"><span class="toc-text">多核CPU与内存共享的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#著名的Cache伪共享问题"><span class="toc-text">著名的Cache伪共享问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深入理解不一致性内存"><span class="toc-text">深入理解不一致性内存</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>除了CPU，内存大概是最重要的计算资源了。基本称为分布式系统标配的缓存中间件、高性能的数据处理系统及当前流行的大数据平台，都离不开对计算机内存的深入理解与巧妙使用。</p>
+<h2 id="你所不知道的内存知识"><a href="#你所不知道的内存知识" class="headerlink" title="你所不知道的内存知识"></a>你所不知道的内存知识</h2><h3 id="复杂的CPU与单纯的内存"><a href="#复杂的CPU与单纯的内存" class="headerlink" title="复杂的CPU与单纯的内存"></a>复杂的CPU与单纯的内存</h3><p>首先，我们澄清几个容易让人混淆的CPU术语。</p>
+<blockquote>
+<ul>
+<li>Socket或者Processor：指一个屋里CPU芯片，盒装的或者散装的，上面有很多针脚，直接安装在主板上。</li>
+<li>Core：指Socket里封装的一个CPU核心，每个Core都是完全独立的计算单元，我们平时说的4核CPU，就是指一个Socket(Processor)里封装了4个Core。</li>
+<li>HT超线程：目前Intel与AMD的Processor大多支持在一个Core里并行执行两个线程，此时在操作系统看来就相当于两个逻辑CPU(Logical Processor),在大多数情况下，我们在程序里提到CPU这个概念时，就是指一个Logical Processor。</li>
+</ul>
+</blockquote>
+<p>&nbsp; &nbsp; 然后，我们先从第一个非常简单的问题开始：CPU可以直接操作内存吗？可能99%的程序员会不假思索的回答：「肯定的，不然程序怎么跑。」如果理性地分析一下，你会发现这个回答有问题：CPU与内存条是独立的两个硬件，而且CPU上也没有插槽和连线可以让内存条挂上去，也就是说，CPU并不能直接访问内存条，而是要通过主办上的其他硬件(接口)来间接访问内存条。</p>
+<p>&nbsp; &nbsp;第二个问题：CPU的运算速度与内存条的访问速度在回见的差距究竟有多大？这个差距跟王健林「先挣它个一个亿的」小目标和「普通人有车有房」的宏大目标之间的差距相比，是更大还是更小呢？答案是：「差不多」。通常来说，CPU的运算速度与内存访问速度之间的差距不过是100倍，假如有100万RMB就可以有有房(贷)有车(贷)了没那么其100倍就刚好是一亿RMB。</p>
+<p>&nbsp; &nbsp;既然CPU的速度与内存的速度还是存在高度两个数量级的巨大鸿沟，所有它们注定不能「幸福地在一起」，于是CPU的亲密伴侣Cache闪亮登场。与来自DRAM家族的内存(Memory)出身不同，Cache来自ASRAM家族。DRAM与SRAM最简单的区别是后者特别快，容量特别小，电路结构非常复杂，造假特别高。</p>
+<p>&nbsp; &nbsp;造成Cache与内存之间巨大性能差距的主要原因是工作原理和结构不同，如下所述。</p>
+<blockquote>
+<ul>
+<li>DRAM存储一个数据只需要一个电容加一个晶体管，SRAM则需要6个晶体管。由于DRAM的数据其实是保存在电容里的，所以每次读写过程中的充放电环节也导致了DRAM读写数据有一个延迟的问题，这个延迟通常为十几到几十ns。</li>
+<li>内存可以看做一个二维数据，每个存储单元都有其行地址和列地址。<br>由于SRAM的容量很小，所以存储单元的地址(行与列)比较短，可以一次性传输到SRAM中；而DRAM则需要分别传送行与列的地址。</li>
+<li>SRAM的频率基本与CPU的频率保持一致；而DRAM的频率知道DDR4以后才开始接近CPU的频率。</li>
+</ul>
+</blockquote>
+<p>&nbsp; &nbsp;Cache是被集成到CPU内部的一个存储单元，一级Cache(L1 Cache)通常只有32~64KB的容量，这个容量远远不能满足CPU大量、告诉存取的需求。此外，由于存储性能的答复提升往往伴随着价格的同步飙升，所以出于对整体成本的控制，现实中往往采用金字塔形的多级Cache体系来实现最佳缓存效果，于是出现了二级Cache(L2 Cache)及三级Cache(L3 Cache)，每一级Cache都牺牲了部分性能指标来换取更大的容量，目的是缓存更多的热点数据。以Intel家族 Intel Sandy Bridge架构的CPU为例，其L1 Cache容量为64KB，访问速度为1ns左右；L2 Cache容量扩大4倍，达到256KB，访问速度则降低到3ns左右；L3 Cache的容量则扩大512倍，达到32MB，访问速度也下降到12ns左右，即使如此，也比访问驻村的100ns(40ns+65ns)快一个数量级。此外，L3 Cache是被一个Socket上的所有CPU Core共享的，其实最早的L3 Cache被应用在AMD发布的K6-III处理器上，当时的L3 Cache受限于制造工艺，并没有被集成到CPU内部，而是集成到主板上。</p>
+<p>&nbsp; &nbsp;从Intel Sandy Bridge CPU架构图中可以看出，CPU如果要访问内存中的数据，则要经过L1、L2、L3这三道关卡后才能抵达目的地，这个过程并不是「皇上」(CPU)亲自出马，而是交由3个级别的贵妃(Cache)们层层转发「圣旨」(内部指令)，最红抵达「后宫」(内存).</p>
+<p><img src="/images/storage/srqxnc_1.png" alt="1565571049876"></p>
+<hr>
+<h3 id="多核CPU与内存共享的问题"><a href="#多核CPU与内存共享的问题" class="headerlink" title="多核CPU与内存共享的问题"></a>多核CPU与内存共享的问题</h3><p>&nbsp; &nbsp;在多核CPU的情况下，如何共享内存？</p>
+<p>&nbsp; &nbsp;如果擅长多线程高级编程，那么肯定会毫不犹豫地给出以下伪代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(memory)&#123;</span><br><span class="line">    doSomething(...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&nbsp; &nbsp;如果真这个简单，那么这个世界上就不会只剩下两家独大的主流CPU制造商了，而且可怜的AMD一直被Intel「吊打」。</p>
+<p>&nbsp; &nbsp;多核CPU共享内存的问题也被称为Cache一致性问题，简单地说，就是多个CPU核心所看到的Cache数据应该是一直的，在某个数据被某个CPU写入自己的Cache(L1 Cache)以后，其他CPU都应该能看到相同的Cache数据；如果自己的Cache中有旧数据，则抛弃旧数据。考虑到每个CPU有自己内存独占的Cache，所以这个问题与分布式Cache保持同步的问题是同一类问题。来自Intel的MESI协议是目前业界公认的Cache一致性问题的最佳方案，大多数SMP架构都采用这一方案，虽然该协议是一个CPU内部的协议，但由于它对我们理解内存模型及解决分布式系统的数据一致性问题有重要的参考价值，所以在这对其进行简单介绍。</p>
+<p>&nbsp; &nbsp;Cache Line，如果有印象的话，则你会发现I/O操作从来不以字节为单位，而是以「块」为单位，这里有两个原因：首先，因为I/O操作比较慢，所以读一个字节与一个读连续N个字节所花费的时间基本相同；其次，数据访问往往具有空间连续性地特征，即我们通常会访问空间上连续的一些数据。举个例子，访问数组时通常会循环遍历，比如查找某个值或者进行比较等，如果把数组中连续的几个字节都读到内存中，那么CPU的处理速度会提升几倍。对于CPU来说，由于Memory也是慢速的外部组件，所以针对Memory的读写也采用类似I/O块的方式就不足为奇了。实际上，CPU Cache里的最小存储单元就是Cache Line，Intel CPU的一个Cache Line存储64个字节，每一级Cache都被划分为很多组Cache Line，典型的情况是4条Cache Line为一组，当Cache从Memory中加载数据时，一次加载一条Cache Line的数据。下图是Cache的结构。</p>
+<p><img src="/images/storage/srqxnc_2.png" alt="1565572262318"></p>
+<p>&nbsp; &nbsp;每个Cache Line的头部有两个Bit来表示自身的状态，总共4种状态。</p>
+<blockquote>
+<ul>
+<li>M（Modified）：修改状态，其他CPU上没有数据的副本，并且在本CPU上被修改过，与存储器中的数据不一致，最终必然会引发系统总线的写指令，将Cache Line的数据写回到Memory中。</li>
+<li>E(Exclusive)：独占状态，表示当前Cache Line中包含的数据与Memory中的数据一致，此外，其他CPU中没有数据的副本。</li>
+<li>S（Shared）：共享状态，表示Cache Line中包含的数据与Memory中的数据一致，而且在当前CPU和至少在其他某个CPU中有副本。</li>
+<li>I(Invalid)：无效状态，当前Cache Line中没有有效数据或该Cache Line的数据已经失效，不能再用，当Cache要加载新数据时，优先选择此状态的Cache Line，此外，Cache Line的初始状态也是I状态。</li>
+</ul>
+</blockquote>
+<p>&nbsp; &nbsp;MESI协议是用Cache Line的上述4种状态命名的，对Cache的读写操作引发了Cache Line的状态变化，因而可以理解为一种状态机模型。但MESI的复杂和独特之处在于状态的两种视角：一种是当前读写操作(Local Read/Write)所在CPU看到的自身的Cache Line状态及其他CPU上对应的Cache Line状态；另一种是一个CPU上的Cache Line状态的变迁会导致其他CPU上对应的Cache Line的状态变迁。如下所示为MESI协议的状态图。</p>
+<p><img src="/images/storage/srqxnc_3.png" alt="1565573021589"></p>
+<p>&nbsp; &nbsp;结合状态图，我们深入分析MESI协议的一些实现细节。</p>
+<p>&nbsp; &nbsp;（1）某个CPU(CPU A)发起本地读请求(Local Read)，比如读取某个内存地址的变量，如果此时所有的CPU的Cache中都没有加载此内存地址，即此内存地址对应的Cache Line为无效状态(Invalid)，则CPU A中的Cache会发起一个到Memory的内存Load指令，在相应的Cache Line中完成内存加载后，此Cache Line的状态会被标记位Exclusive。接下来，如果其他CPU(CPU B)在总线上也发起对同一个内存地址的读请求，则这个读请求会被CPU A 嗅探到(SNOOP),然后CPU A在内存总线上复制一份Cache Line作为应答，并将自身的Cache Line状态改为Shared，同时CPU B收到来自总线的应答并保存到自己的Cache里，也修改对应的Cache Line 状态为Shared。</p>
+<p>&nbsp; &nbsp;(2)某个CPU(CPU A)发起本地写请求(Loacl Write),比如对某个内存地址的变量赋值，如果此时多有的CPU的Cache中都没加载此内存地址，即此内存对应的Cache Line为无效状态(Invalid)，则CPU A 中的Cache Line保存了最新的内存变量值后，其祖航太修改为Modified。随后，如果CPU B发起对同一个变量的读操作(Remote Read)，则CPU A在总线嗅探到这个读请求以后，先将Cache Line里修改过的数据回写(Write Back)到Memory中，然后在内存总线上复制一份Cache Line作为应答，最后将自身的Cache Line状态修改为Shared，由此产生的结果是CPU A与CPU B里对应的Cache Line状态都为Shared。</p>
+<p>&nbsp; &nbsp;(3)以上面第二条内容为基础，CPU A发起本地写请求并导致自身的Cache Line状态变为Modified，如果此时CPU B 发起同一个内存地址的写请求(Remote Write)，则我们看到的状态图里此时CPU A 的Cache Line状态为Invalid 其原因如下。</p>
+<p>&nbsp; &nbsp;CPU B此时发出的是一个特殊的请求——读并且打算修改数据，当CPU A从总线上嗅探到这个请求后，会先阻止此请求并取得总线的控制权( Takes Control of Bus)，随后将Cache Line里修改过的数据回写到Memory中，再将此Cache Line的状态修改为Invalid(这是因为其他CPU要改数据，所以没必要改为Shared)。与此同时，CPU B 发现之前的请求并没有得到响应，于是重新发起一次请求，此时由于所有的CPU的Cache里都没有内存副本了，所以CPU B的Cache就从Memory中加载最新的数据到Cache Line中，随后修改数据，然后改变Cache Line的状态为Modified。</p>
+<p>  &nbsp; &nbsp;(4)如果内存中的某个变量被多个CPU加载到各自的Cache中，从而使得变量对应的Cache Line状态为Shared，若此时某个CPU打算对此变量进行写操作，则会导致所有拥有此变量缓存的CPU的Cache Line状态都变为Invalid，这是引发性能下降的一个典型Cache Miss 问题。</p>
+<p>  &nbsp; &nbsp;在理解了MESI协议以后，我们明白了一个重要的事实，即存在多个处理器时，对共享变量的修改操作会设计多个CPU之间协调问题及Cache失效问题，这就引发了著名的「Cache伪共享」问题。</p>
+<p>   &nbsp; &nbsp;如果要访问的数据不在CPU的运算单元里，则需要从缓存中加载，如果缓存中恰好有此数据而且数据有效，就命中一次(Cache Hit)，反之产生一次Cache Miss ，此时需要从下一级缓存或主存中再次尝试加载。根据之前的分析，如果发生了Cache Miss，则数据的访问性能瞬间下降很多！在我们需要大量加载运算的情况下，数据结构、访问方式及程序运算方面是否符合「缓存友好」的设计，就成为「量变引起质变」得关键性因素了。这也是为什么最近，国外很多大数据领域的专家都热衷于研究设计和采用新一代的数据结构和算法，而其核心之一就是「缓存友好」。</p>
+<hr>
+<h3 id="著名的Cache伪共享问题"><a href="#著名的Cache伪共享问题" class="headerlink" title="著名的Cache伪共享问题"></a>著名的Cache伪共享问题</h3><p>&nbsp; &nbsp;Cache伪共享问题是编程中真实存在的一个问题，考虑如下所示的Java Class结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyObject</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> a;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> b;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> &nbsp; &nbsp; 按照java规范,MyObject的对象是在堆内存上分配空间存储的，而且a、b、c三个属性在内存空间上是邻近，如下所示。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a(8个字节)</td>
+<td>b（8个字节）</td>
+<td>c(8个字节)</td>
+</tr>
+</tbody></table>
+<p> &nbsp; &nbsp;我们知道，X86的CPU中Cache Line的长度为64字节，这也就意味着MyObject的3个属性(长度之和为24字节)是完全可能加载在一个Cache Line里的。如此一来，如果我们有两个不同的线程(分别运行在两个CPU上)分别同时独立修改a与b这两个属性，那么这两个CPU上的Cache Line可能出现如下所示的情况，即a与b这两个变量被放入同一个Cache Line里，并且被两个不同的CPU共享。</p>
+<p><img src="/images/storage/srqxnc_4.png" alt="1566381303626"></p>
+<p>&nbsp; &nbsp;根据上节中MESI协议的相关知识，我们知道，如果Thread 0要对a变量进行修改，则因为CPU 1 上有对应的Cache Line ， 这会导致CPU 1 的Cache Line 无效，从而使得Thread 1 被迫重新从Memory里获取b的内容(b并没有被其他CPU改变，这样做是因为b与a在一个Cache Line里)。同样，如果Thread 1 要对b变量进行修改，则同样导致Thread 0 的Cache Line 失效，不得不重新从Memory里加载a。如此一来，本来是逻辑上无关的两个线程，完全可以在两个不同的CPU上同时执行，但阴差阳错地共享了同一个Cache Line 并相互抢占资源，导致并形成为串行，大大降低了系统的并发性，这就是所谓的Cache伪共享。</p>
+<p>&nbsp; &nbsp;解决Cache伪共享问题的方法很简单，将a与b两个变量分到不同的Cache Line里，通常可以用一些无用的字段填充a与b之间的空隙。由于伪共享问题对性能的影响比较大，所以JDK 8 首次提供了正式的普适性的方案，即采用@Contended注解来确保一个Object或者Class里的某个属性与其他属性不在一个Cache Line里，下面的VolatileLong的多个实例之间就不会产生Cache伪共享的问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Contended</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VolatileLong</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">long</span> value = <span class="number">0L</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="深入理解不一致性内存"><a href="#深入理解不一致性内存" class="headerlink" title="深入理解不一致性内存"></a>深入理解不一致性内存</h3><p>&nbsp; &nbsp;MESI协议解决了多核CPU下的Cache一致性问题，因而成为SMP架构的唯一选择。SMP架构近几年迅速在PC领域(X86)发展，一个CPU芯片上集成的CPU核心数量越来越多，到2017年，AMD的ZEN系列处理器就已经达到16核心32线程了。SMP架构是一种平行的结果，所有CPU Core都连接到一个内存总线上，他们平等访问内存，同时整个内存是统一结构、统一寻址的(Uniform Memory Architecture , UMA)。如下所示给出了SMP架构的示意图。</p>
+<p><img src="/images/storage/srqxnc_5.png" alt="1566382149967"></p>
+<p>&nbsp; &nbsp;但是，随着CPU核心数量的不断增长，SMP架构也暴露其天生的短板，其根本瓶颈是共享内存总线的宽带无法满足CPU数量的增加，同时，一条「马路」上同行的「车」多了，难免陷入「拥堵模式」。在这种情况下，分布式解决方案应运而生，系统的内存与CPU进行分割并绑定在一起，形成多个独立的子系统，这些子系统之间高速互连，这就是所谓的NUMA（None Uniform Memory Architecture）架构，如下图所示：</p>
+<p><img src="/images/storage/srqxnc_6.png" alt="1566382356771"></p>
+<p>&nbsp; &nbsp;我们可以认为NUMA架构第1次打破了「大锅饭」的模式，内存不在是一个整体，而是被分割为互相独立的几块，被不同的CPU私有化(Attach到不同的CPU上)。因此，当CPU访问自身私有的内存地址时（Local Access），会很快得到响应，而如果需要访问其他CPU控制的内存数据（Remote Access），则需要通过某种互连通道（Inter-connect通道）访问，响应时间与之前相对变慢。NUMA的主要优点是伸缩性，NUMA的这种体系结构在设计上已经超越了SMP，可以扩展到几百个CPU而不会导致性能的严重下降。</p>
+<p>&nbsp; &nbsp;NUMA技术最早出现出现在20世纪80年代，主要运行在一些大中型UNIX系统中，Sequent公司是世界公认的NUMA技术领袖。早在1986年，Sequent公司就率先利用微处理器构建大型系统，开发了基于UNIX的SMP体系结构，开创了业界转入SMP领域的先河。1999年9月，IBM公司收购了Sequent公司，将NUMA技术集成到IBM UNIX阵营中，并推出了能够支持和扩展Intel平台的NUMA-Q系统及方案，为全球大型企业客户适应高速发展的电子商务市场提供了更加多样化、高可扩展性及易于管理的选择，成为NUMA技术的领先开发者与革新者。随后很多老牌UNIX服务器厂商也采用了NUMA技术，例如IBM、Sun、惠普、Unisys、SGI等公司。2000年全球互联网泡沫破灭后，X86+Linux系统开始以低廉的成本侵占UNIX的底盘，AMD率先在其AMD Opteron 系列处理器中的X86 CPU上实现了NUMA架构，Intel也跟进并在Intel Nehalem中实现了NUMA架构（Intel服务器芯片志强E5500以上的CPU和桌面的i3、i5、i7均采用此架构），至此NUMA这个贵族技术开始真正走入平常百姓家。</p>
+<p>&nbsp; &nbsp;下面详细分析一下NUMA技术的特点。首先，NUMA架构中引入了一个重要的新名词——Node，一个Node由一个或者多个Socket组成，即物理上的一个或多个CPU芯片组成一个逻辑上的Node。如下所示为来自Dell PowerEdge系统服务器的说明手册中的NUMA的图片，4个Intel Xeon E 5-4600处理器形成4个独立的NUMA Node，由于每个Intel Xeon E 5-4600为8Core，支持双线程，所以每个Node里的Logic CPU数量为16个，占每个Node分配系统总内存1/4，每个Node之间通过Intel QPI（QuickPath Interconnect）技术形成了点到点的全互连处理器系统。</p>
+<p><img src="/images/storage/srqxnc_7.png" alt="1566383334597"></p>
+<p>&nbsp; &nbsp;其次，我们看到NUMA这种基于点到点的全互连处理器系统与传统的基于共享总线的处理器系统的SMP还是有巨大差异的。在这种情况下无法通过嗅探总线的方式来实现Cache一致性，因此为了实现NUMA架构下的Cache一致性，Intel引入了MESI协议的一个扩展写协议——MESIF。MESIF采用了一种基于目录表的实现方案，该协议由Boxboro-EX处理器系统实现，但独立研究MESIF协议并没有太大的意义，因为目前Intel并没有公开Boxbore-EX处理器系统的详细设计文档。</p>
+<p>&nbsp; &nbsp;最后，我们说说NUMA架构的当前困境与我们对未来的展望。</p>
+<p>&nbsp; &nbsp;NUMA架构由于打破了传统的「全局内存」概念，目前在编程语言方面还没有任何一种语言从内存模型上支持它，所以当前很难开发适应NUMA的软件。但这方面已经有很多尝试和进展了。Java在支持NUMA的系统里，可以开启基于NUMA的内存分配方案，使得当前线程所需要的内存从对应的Node上分配，从而大大加快对象的创建过程。在大数据领域，NUMA系统正在发挥着越来越强的作用，SAP的高端大数据系统HANA被SGI在其UV NUMA Systems上实现了良好的水平扩展。据说微软将会把SQL Server引入到Linux上，如此一来，很多潜在客户将有机会在SGI提供的大型NUMA机器上高速运行多个SQL Server实例。在云计算与虚拟化方面。OpenStack与VMware已经支持基于NUMA技术的虚机分配能力，使得不同的虚机运行在不同的Core上，同时虚机的内存不会跨越多个NUMA Node。</p>
+<p>&nbsp; &nbsp;NUMA技术也会推进基于多进程的高性能单机分布式系统的发展，即在4个Socket、每个Socket为16Core的强大机器里，只要启动4个进程，通过NUMA技术将每个进程绑定到一个Socket上，并保证每个进程只访问不超过Node本地的内存，即可让系统进行最高性能的并发，而进程间的通信通过高性能进程间的通信技术实现即可。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 iszhwork@163.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a href="javascript:void(0)" class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>深入浅析内存</p>
+    
+    <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="Today">Today</a></p>
+    <p><span class="copy-title">发布时间:</span>2019-10-24, 09:16:00</p>
+    <p><span class="copy-title">最后更新:</span>2019-08-26, 08:45:21</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/24/深入浅析内存/" title="深入浅析内存">http://yoursite.com/2019/10/24/深入浅析内存/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2016-2019 iszhanghe</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" href="javascript:void(0)"></a>
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="//cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#mysql','#面试题','#java','#Apollo','#配置管理','#linux','#SeaweedFS','#分布式文件系统','#MySQL','#maven','#Spring Cloud','#微服务','#单元测试','#sonarQube','#多态','#书籍','#内存','#IDEA 破解','#idea',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
